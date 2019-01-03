@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vstslinuxbuild
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vstslinuxbuild
+  template:
+    metadata:
+      labels:
+        app: vstslinuxbuild
+    spec:
+      containers:
+      - name: vstslinuxbuild
+        image: denhamparry/buildagent
+        ports:
+        - containerPort: 443
+        env:
+          - name: VSTS_ACCOUNT
+            valueFrom:
+              secretKeyRef:
+                name: vsts
+                key: account
+          - name: VSTS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: vsts
+                key: token
+          - name: VSTS_POOL
+            valueFrom:
+              secretKeyRef:
+                name: vsts
+                key: pool
+        volumeMounts:
+          - name: docker-graph-storage
+            mountPath: /var/lib/docker
+      volumes:
+        - name: docker-graph-storage
+          emptyDir: {}
