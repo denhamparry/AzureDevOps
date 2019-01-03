@@ -1,0 +1,1 @@
+az group delete --name AKSDevOps --yes --no-wait
