@@ -1,0 +1,1 @@
+az vm deallocate --ids $(az vm list -g MC_AKSDEVOPS_AKSCLUSTER_EASTUS --query "[].id" -o tsv)
